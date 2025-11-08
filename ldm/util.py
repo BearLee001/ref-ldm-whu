@@ -3,9 +3,8 @@ import importlib
 import torch
 import numpy as np
 from collections import abc
-from einops import rearrange
-from functools import partial
 from omegaconf import OmegaConf
+from torchvision.transforms.functional import pil_to_tensor
 
 import multiprocessing as mp
 from threading import Thread
@@ -218,3 +217,34 @@ def parallel_data_prefetch(
         return out
     else:
         return gather_res
+
+def load_model(config_path, ckpt_path, vae_path, device):
+    """Loads the model onto the device only once."""
+    print("Loading model...")
+    config = OmegaConf.load(config_path)
+    config.model.params.first_stage_config.params.ckpt_path = vae_path
+
+    for k in ['ckpt_path', 'perceptual_loss_config']:
+        config.model.params.pop(k, None)
+
+    model = instantiate_from_config(config.model)
+    model.load_state_dict(torch.load(ckpt_path, map_location='cpu'), strict=False)
+
+    model = model.to(device)
+    model.eval()
+    print(f"Model loaded on {device}")
+    return model
+
+
+def read_and_normalize_image(image, size=(512, 512)):
+    """Normalizes a PIL image for the model."""
+    if not isinstance(image, Image.Image):
+        raise ValueError("Input must be a PIL Image")
+
+    image = image.convert("RGB")
+    if image.size != size:
+        image = image.resize(size, Image.Resampling.LANCZOS)
+
+    tensor = pil_to_tensor(image)
+    tensor = tensor / 127.5 - 1.0  # [0, 255] to [-1, 1]
+    return tensor

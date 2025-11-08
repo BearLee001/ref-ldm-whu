@@ -1,5 +1,7 @@
 import os
 from PIL import Image
+
+
 def resize_images_to_square(input_dir, output_dir, size=512):
     """
     Resizes all images in the input directory to a square format and saves them

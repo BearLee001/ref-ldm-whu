@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 import gradio as gr
+
+from dataclasses import dataclass
 CSS = """
 .gradio-container { font-family: 'Microsoft YaHei', 'SimSun', sans-serif; }
 .gr-button-primary { background: linear-gradient(to bottom right, #4A90E2, #0056b3); border-color: #0056b3; }

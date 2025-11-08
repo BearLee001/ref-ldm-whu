@@ -1,11 +1,14 @@
 import gradio as gr
+import torch
+from torchvision.transforms.functional import to_pil_image
+
 import time
+from PIL import Image
 
 from ldm.global_config import DEVICE, MODEL, SAMPLER
 from ldm.util import read_and_normalize_image
-import torch
-from PIL import Image
-from torchvision.transforms.functional import to_pil_image
+
+
 def process_and_restore(lq_image, ref_images, progress=gr.Progress(track_tqdm=True)):
     """The main function to run inference when the button is clicked."""
     # Input validation

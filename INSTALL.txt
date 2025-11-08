@@ -2,4 +2,7 @@ Recommended python version:
 Python 3.9.6
 pip 21.2.4 
 
-
+run python3 download_ckpts.py to download ckpts automatically
+download_ckpts.py needs:
+- tqdm
+- requests

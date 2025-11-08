@@ -97,6 +97,5 @@ def main():
     output_image = output_image.squeeze(0).cpu()
     to_pil_image(output_image).save(args.output_path)
 
-
 if __name__ == '__main__':
     main()

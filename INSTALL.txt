@@ -1,0 +1,5 @@
+Recommended python version:
+Python 3.9.6
+pip 21.2.4 
+
+

@@ -1,6 +1,5 @@
 import os
 from PIL import Image
-
 def resize_images_to_square(input_dir, output_dir, size=512):
     """
     Resizes all images in the input directory to a square format and saves them
@@ -20,7 +19,7 @@ def resize_images_to_square(input_dir, output_dir, size=512):
         print(f"Created output directory: {output_dir}")
 
     supported_formats = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
-    
+
     for filename in os.listdir(input_dir):
         if filename.lower().endswith(supported_formats):
             try:
@@ -30,7 +29,7 @@ def resize_images_to_square(input_dir, output_dir, size=512):
                 with Image.open(input_path) as img:
                     # Convert to RGB to handle formats like RGBA or P
                     img = img.convert('RGB')
-                    
+
                     # Calculate new dimensions to maintain aspect ratio
                     width, height = img.size
                     if width < height:
@@ -48,7 +47,7 @@ def resize_images_to_square(input_dir, output_dir, size=512):
                     top = (new_height - size) / 2
                     right = (new_width + size) / 2
                     bottom = (new_height + size) / 2
-                    
+
                     img_cropped = img_resized.crop((left, top, right, bottom))
 
                     img_cropped.save(output_path)
@@ -56,14 +55,3 @@ def resize_images_to_square(input_dir, output_dir, size=512):
 
             except Exception as e:
                 print(f"Could not process {filename}. Reason: {e}")
-
-if __name__ == '__main__':
-    INPUT_FOLDER = 'assets/ironman'
-    OUTPUT_FOLDER = 'assets/ironman_resized'
-    TARGET_SIZE = 512  # The final image will be 512x512 pixels
-
-    if not os.path.exists(INPUT_FOLDER):
-        print(f"[Error] Input directory not found: {INPUT_FOLDER}")
-    else:
-        resize_images_to_square(INPUT_FOLDER, OUTPUT_FOLDER, TARGET_SIZE)
-        print("\nProcessing complete.")
